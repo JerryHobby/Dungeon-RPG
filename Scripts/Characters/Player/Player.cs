@@ -6,7 +6,7 @@ public partial class Player : CharacterBody3D
     public int Speed = 1;
     public override void _PhysicsProcess(double delta)
     {
-        base._PhysicsProcess(delta);
+        // base._PhysicsProcess(delta);
 
         //GD.Print("Player _PhysicsProcess");
     }
