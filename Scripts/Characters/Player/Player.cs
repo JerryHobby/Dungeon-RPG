@@ -8,7 +8,6 @@ public partial class Player : CharacterBody3D
     [Export] private Sprite3D spriteNode;
     [ExportGroup("Movement")]
     [Export] private float Speed = GameConstants.DEFAULT_SPEED;
-    [Export] private float JumpForce = GameConstants.DEFAULT_JUMP_FORCE;
     [Export] private float Gravity = GameConstants.DEFAULT_GRAVITY;
 
 
@@ -21,18 +20,18 @@ public partial class Player : CharacterBody3D
     public override void _PhysicsProcess(double delta)
     {
         Velocity = new Vector3(direction.X, 0, direction.Y) * Speed;
-
+        FlipSprite();
         MoveAndSlide();
     }
 
     public override void _Input(InputEvent @event)
     {
         direction = Input.GetVector(
-            GameConstants.MOVE_LEFT,
-            GameConstants.MOVE_RIGHT,
-            GameConstants.MOVE_FORWARD,
-            GameConstants.MOVE_BACKWARD
-    );
+            GameConstants.INPUT_MOVE_LEFT,
+            GameConstants.INPUT_MOVE_RIGHT,
+            GameConstants.INPUT_MOVE_FORWARD,
+            GameConstants.INPUT_MOVE_BACKWARD
+        );
 
         if (direction == Vector2.Zero)
         {
@@ -40,15 +39,15 @@ public partial class Player : CharacterBody3D
         }
         else
         {
-            animPlayerNode.Play(GameConstants.ANIM_WALK);
+            animPlayerNode.Play(GameConstants.ANIM_MOVE);
         }
-        if (direction.X < 0)
-        {
-            spriteNode.Scale = GameConstants.FACE_LEFT;
-        }
-        else if (direction.X > 0)
-        {
-            spriteNode.Scale = GameConstants.FACE_RIGHT;
-        }
+    }
+
+    private void FlipSprite()
+    {
+        if (Velocity.X == 0) return;
+
+        bool isMovingLeft = Velocity.X < 0;
+        spriteNode.FlipH = isMovingLeft;
     }
 }

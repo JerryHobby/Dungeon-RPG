@@ -195,10 +195,10 @@ _data = {
 "Dying": SubResource("Animation_q4cix"),
 "Idle": SubResource("Animation_xvuf6"),
 "Kicking": SubResource("Animation_i2hcj"),
+"Move": SubResource("Animation_pnmi2"),
 "RESET": SubResource("Animation_0s0ov"),
 "Slashing": SubResource("Animation_qkppm"),
-"Sliding": SubResource("Animation_oymaw"),
-"Walk": SubResource("Animation_pnmi2")
+"Sliding": SubResource("Animation_oymaw")
 }
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_3po4c"]
@@ -211,6 +211,8 @@ animPlayerNode = NodePath("AnimationPlayer")
 spriteNode = NodePath("Sprite3D")
 
 [node name="Sprite3D" type="Sprite3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0443587, -0.214433, 0.109253)
+texture_filter = 0
 texture = ExtResource("1_k5bqu")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
