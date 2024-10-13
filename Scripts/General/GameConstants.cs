@@ -16,11 +16,11 @@ public class GameConstants
 
     // Animation Constants
     public const string ANIM_IDLE = "Idle";
-    public const string ANIM_DIE = "Dying";
     public const string ANIM_MOVE = "Move";
-    public const string ANIM_KICK = "Kicking";
-    public const string ANIM_RESET = "RESET";
-    public const string ANIM_SLASH = "Slashing";
-    public const string ANIM_SLIDE = "Sliding";
+    public const string ANIM_ATTACK = "Attack";
+    public const string ANIM_DASH = "Dash";
+    public const string ANIM_DEATH = "Death";
 
+    public const string ANIM_KICK = "Kick";
+    public const string ANIM_RESET = "RESET";
 }

@@ -4,19 +4,18 @@ using System;
 public partial class Player : CharacterBody3D
 {
     [ExportGroup("Required Nodes")]
-    [Export] private AnimationPlayer animPlayerNode;
-    [Export] private Sprite3D spriteNode;
+    [Export] public AnimationPlayer animPlayerNode;
+    [Export] public Sprite3D spriteNode;
+    [Export] public StateMachine stateMachine;
+
     [ExportGroup("Movement")]
     [Export] private float Speed = GameConstants.DEFAULT_SPEED;
     [Export] private float Gravity = GameConstants.DEFAULT_GRAVITY;
 
 
-    private Vector2 direction = new();
+    public Vector2 direction = new();
 
-    public override void _Ready()
-    {
-        animPlayerNode.Play(GameConstants.ANIM_IDLE);
-    }
+
     public override void _PhysicsProcess(double delta)
     {
         Velocity = new Vector3(direction.X, 0, direction.Y) * Speed;
@@ -32,15 +31,6 @@ public partial class Player : CharacterBody3D
             GameConstants.INPUT_MOVE_FORWARD,
             GameConstants.INPUT_MOVE_BACKWARD
         );
-
-        if (direction == Vector2.Zero)
-        {
-            animPlayerNode.Play(GameConstants.ANIM_IDLE);
-        }
-        else
-        {
-            animPlayerNode.Play(GameConstants.ANIM_MOVE);
-        }
     }
 
     private void FlipSprite()
