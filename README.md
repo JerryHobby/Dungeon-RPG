@@ -7,3 +7,7 @@ The book: https://luisramirez.gitbook.io/godot-2.5d-rpg-course
 https://docs.godotengine.org/en/stable/classes/index.html
 
 ## Godot 2.5D RPG Course
+
+## Dungeon Asset Pack
+
+https://kaylousberg.itch.io/kaykit-dungeon-remastered

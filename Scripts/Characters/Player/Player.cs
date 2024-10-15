@@ -4,13 +4,9 @@ using System;
 public partial class Player : CharacterBody3D
 {
     [ExportGroup("Required Nodes")]
-    [Export] public AnimationPlayer animPlayerNode;
-    [Export] public Sprite3D spriteNode;
-    [Export] public StateMachine stateMachine;
-
-    [ExportGroup("Movement")]
-    [Export] public float Speed = GameConstants.DEFAULT_SPEED;
-    [Export] public float Gravity = GameConstants.DEFAULT_GRAVITY;
+    [Export] public AnimationPlayer AnimPlayerNode { get; private set; }
+    [Export] public Sprite3D SpriteNode { get; private set; }
+    [Export] public StateMachine StateMachine { get; private set; }
 
 
     public Vector2 direction = new();
@@ -25,12 +21,11 @@ public partial class Player : CharacterBody3D
         );
     }
 
-
     public void FlipSprite()
     {
         if (Velocity.X == 0) return;
 
         bool isMovingLeft = Velocity.X < 0;
-        spriteNode.FlipH = isMovingLeft;
+        SpriteNode.FlipH = isMovingLeft;
     }
 }
