@@ -9,19 +9,11 @@ public partial class Player : CharacterBody3D
     [Export] public StateMachine stateMachine;
 
     [ExportGroup("Movement")]
-    [Export] private float Speed = GameConstants.DEFAULT_SPEED;
-    [Export] private float Gravity = GameConstants.DEFAULT_GRAVITY;
+    [Export] public float Speed = GameConstants.DEFAULT_SPEED;
+    [Export] public float Gravity = GameConstants.DEFAULT_GRAVITY;
 
 
     public Vector2 direction = new();
-
-
-    public override void _PhysicsProcess(double delta)
-    {
-        Velocity = new Vector3(direction.X, 0, direction.Y) * Speed;
-        FlipSprite();
-        MoveAndSlide();
-    }
 
     public override void _Input(InputEvent @event)
     {
@@ -33,7 +25,8 @@ public partial class Player : CharacterBody3D
         );
     }
 
-    private void FlipSprite()
+
+    public void FlipSprite()
     {
         if (Velocity.X == 0) return;
 

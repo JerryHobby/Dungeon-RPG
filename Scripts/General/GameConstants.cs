@@ -7,11 +7,17 @@ public class GameConstants
     public const float DEFAULT_SPEED = 5;
 
 
+    // Notification Constants
+    public const int NOTIFICATION_ENTER_STATE = 5001;
+    public const int NOTIFICATION_EXIT_STATE = 5002;
+
+
     // Input Constants
     public const string INPUT_MOVE_LEFT = "MoveLeft";
     public const string INPUT_MOVE_RIGHT = "MoveRight";
     public const string INPUT_MOVE_FORWARD = "MoveForward";
     public const string INPUT_MOVE_BACKWARD = "MoveBackward";
+    public const string INPUT_DASH = "Dash";
 
 
     // Animation Constants
