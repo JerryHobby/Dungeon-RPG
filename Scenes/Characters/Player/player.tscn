@@ -211,6 +211,8 @@ height = 1.3873
 
 [node name="Player" type="CharacterBody3D" node_paths=PackedStringArray("AnimPlayerNode", "SpriteNode", "StateMachine")]
 collision_layer = 2
+floor_max_angle = 1.53764
+floor_snap_length = 0.2
 script = ExtResource("1_8rusb")
 AnimPlayerNode = NodePath("AnimationPlayer")
 SpriteNode = NodePath("Sprite3D")
