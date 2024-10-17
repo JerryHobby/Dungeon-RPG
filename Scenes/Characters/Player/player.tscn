@@ -206,10 +206,11 @@ _data = {
 }
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_3po4c"]
-radius = 1.10362
-height = 5.28501
+radius = 0.492413
+height = 1.3873
 
 [node name="Player" type="CharacterBody3D" node_paths=PackedStringArray("AnimPlayerNode", "SpriteNode", "StateMachine")]
+collision_layer = 2
 script = ExtResource("1_8rusb")
 AnimPlayerNode = NodePath("AnimationPlayer")
 SpriteNode = NodePath("Sprite3D")
@@ -217,6 +218,7 @@ StateMachine = NodePath("StateMachine")
 
 [node name="Sprite3D" type="Sprite3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0443587, -0.214433, 0.109253)
+pixel_size = 0.0025
 texture_filter = 0
 texture = ExtResource("1_k5bqu")
 
@@ -226,7 +228,7 @@ libraries = {
 }
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.587005, -0.727161, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0761918, -0.218376, 0.0826261)
 shape = SubResource("CapsuleShape3D_3po4c")
 
 [node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("currentState", "states")]
