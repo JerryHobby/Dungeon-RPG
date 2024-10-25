@@ -5,7 +5,7 @@ public class GameConstants
     // Movement Constants
     public const float DEFAULT_GRAVITY = 9.8f;
     public const float DEFAULT_SPEED = 5;
-
+    public const float DEFAULT_ENEMY_SPEED = 5;
 
     // Notification Constants
     public const int NOTIFICATION_ENTER_STATE = 5001;
@@ -18,6 +18,7 @@ public class GameConstants
     public const string INPUT_MOVE_FORWARD = "MoveForward";
     public const string INPUT_MOVE_BACKWARD = "MoveBackward";
     public const string INPUT_DASH = "Dash";
+    public const string INPUT_ATTACK = "Attack";
 
 
     // Animation Constants

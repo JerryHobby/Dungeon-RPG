@@ -1,38 +1,21 @@
 using Godot;
 using System;
 
-public abstract partial class PlayerState : Node
+public abstract partial class PlayerState : CharacterState
 {
-    protected Player characterNode;
-
-    public override void _Ready()
+    protected void CheckForAttackInput()
     {
-        characterNode = GetOwner<Player>();
-        EnableNode(false);
-    }
-
-    public override void _Notification(int what)
-    {
-        base._Notification(what);
-
-        if (what == GameConstants.NOTIFICATION_ENTER_STATE)
+        if (Input.IsActionJustPressed(GameConstants.INPUT_ATTACK))
         {
-            EnterState();
-            EnableNode(true);
-        }
-        if (what == GameConstants.NOTIFICATION_EXIT_STATE)
-        {
-            EnableNode(false);
+            characterNode.StateMachine.SwitchState<PlayerAttackState>();
         }
     }
 
-    private void EnableNode(bool enable)
+    protected void CheckForDashInput()
     {
-        SetPhysicsProcess(enable);
-        SetProcessInput(enable);
-    }
-
-    protected virtual void EnterState()
-    {
+        if (Input.IsActionJustPressed(GameConstants.INPUT_DASH))
+        {
+            characterNode.StateMachine.SwitchState<PlayerDashState>();
+        }
     }
 }
