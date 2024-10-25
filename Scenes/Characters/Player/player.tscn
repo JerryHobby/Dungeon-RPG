@@ -93,6 +93,10 @@ script = ExtResource("2_mo84w")
 StatType = 1
 StatValue = 3.0
 
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_3po4c"]
+radius = 0.492413
+height = 1.5
+
 [sub_resource type="Animation" id="Animation_qkppm"]
 resource_name = "Slashing"
 step = 0.0833333
@@ -107,6 +111,20 @@ tracks/0/keys = {
 "transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
 "update": 1,
 "values": [ExtResource("58_kysl4"), ExtResource("59_0ascx"), ExtResource("60_ruled"), ExtResource("61_fud32"), ExtResource("62_6jsuk"), ExtResource("63_q25h7"), ExtResource("64_2v5rj"), ExtResource("65_1grpr"), ExtResource("66_rwy6e"), ExtResource("67_5t0ia"), ExtResource("68_c351h"), ExtResource("69_galib")]
+}
+tracks/1/type = "method"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("StateMachine/AttackState")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0.333333),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"PerformHit"
+}]
 }
 
 [sub_resource type="Animation" id="Animation_oymaw"]
@@ -173,6 +191,20 @@ tracks/0/keys = {
 "update": 1,
 "values": [ExtResource("46_vhb2e"), ExtResource("47_fnuw7"), ExtResource("48_4amc5"), ExtResource("49_k4h67"), ExtResource("50_wfwkq"), ExtResource("51_e7uch"), ExtResource("52_7ynln"), ExtResource("53_lch5q"), ExtResource("54_67f07"), ExtResource("55_q65ma"), ExtResource("56_ekh3w"), ExtResource("57_052s8")]
 }
+tracks/1/type = "method"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("StateMachine/AttackState")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0.416667),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"PerformHit"
+}]
+}
 
 [sub_resource type="Animation" id="Animation_pnmi2"]
 resource_name = "Move"
@@ -217,14 +249,10 @@ _data = {
 "RESET": SubResource("Animation_0s0ov")
 }
 
-[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_3po4c"]
-radius = 0.492413
-height = 1.3873
-
 [sub_resource type="BoxShape3D" id="BoxShape3D_kryla"]
 size = Vector3(0.5, 0.5, 0.5)
 
-[node name="Player" type="CharacterBody3D" node_paths=PackedStringArray("AnimPlayerNode", "SpriteNode", "StateMachine")]
+[node name="Player" type="CharacterBody3D" node_paths=PackedStringArray("AnimPlayerNode", "SpriteNode", "StateMachine", "HurtboxNode", "HitboxNode", "HitboxShapeNode")]
 collision_layer = 2
 collision_mask = 5
 floor_max_angle = 1.53764
@@ -234,21 +262,24 @@ stats = Array[Object]([SubResource("Resource_ov75a"), SubResource("Resource_r8ww
 AnimPlayerNode = NodePath("AnimationPlayer")
 SpriteNode = NodePath("Sprite3D")
 StateMachine = NodePath("StateMachine")
+HurtboxNode = NodePath("Hurtbox")
+HitboxNode = NodePath("Hitbox")
+HitboxShapeNode = NodePath("Hitbox/CollisionShape3D")
 
 [node name="Sprite3D" type="Sprite3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0443587, -0.214433, 0.109253)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.214, 0)
 pixel_size = 0.0025
 texture_filter = 0
 texture = ExtResource("1_k5bqu")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.155397, 0)
+shape = SubResource("CapsuleShape3D_3po4c")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
 "": SubResource("AnimationLibrary_msdpx")
 }
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0761918, -0.218376, 0.0826261)
-shape = SubResource("CapsuleShape3D_3po4c")
 
 [node name="StateMachine" parent="." node_paths=PackedStringArray("currentState", "states") instance=ExtResource("77_h4vgc")]
 currentState = NodePath("IdleState")
@@ -277,9 +308,17 @@ wait_time = 0.4
 one_shot = true
 
 [node name="Hitbox" type="Area3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.01997, -0.339231, 0)
 collision_layer = 2
 collision_mask = 0
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Hitbox"]
 shape = SubResource("BoxShape3D_kryla")
+disabled = true
+
+[node name="Hurtbox" type="Area3D" parent="."]
+collision_layer = 0
+collision_mask = 4
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Hurtbox"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.153881, 0)
+shape = SubResource("CapsuleShape3D_3po4c")

@@ -12,6 +12,8 @@ public partial class Character : CharacterBody3D
     [Export] public Sprite3D SpriteNode { get; private set; }
     [Export] public StateMachine StateMachine { get; private set; }
     [Export] public Area3D HurtboxNode { get; private set; }
+    [Export] public Area3D HitboxNode { get; private set; }
+    [Export] public CollisionShape3D HitboxShapeNode { get; private set; }
 
     [ExportGroup("AI Nodes")]
     [Export] public Path3D PathNode { get; private set; }
@@ -34,22 +36,19 @@ public partial class Character : CharacterBody3D
     private void OnHurtboxAreaEntered(Area3D area)
     {
         StatResource health = GetStatResource(Stat.Health);
-        GD.Print($"{this} health == {health.StatValue}");
+
+        Character player = area.GetOwner<Character>();
+
+        health.StatValue -= player.GetStatResource(Stat.Strength).StatValue;
+
+        GD.Print($"{player.Name} hit for {player.GetStatResource(Stat.Strength).StatValue} damage.  Remaining health == {health.StatValue}");
 
     }
 
     private StatResource GetStatResource(Stat stat)
     {
-
-        foreach (StatResource element in stats)
-        {
-            if (element.StatType == stat)
-            {
-                return element;
-            }
-        }
-
-        throw new Exception($"Stat {stat} not found in stats array of {this}");
+        return stats.Where((element) => element.StatType == stat)
+        .FirstOrDefault();
     }
 
 
@@ -59,5 +58,11 @@ public partial class Character : CharacterBody3D
 
         bool isMovingLeft = Velocity.X < 0;
         SpriteNode.FlipH = isMovingLeft;
+    }
+
+
+    public void EnableHitbox(bool value)
+    {
+        HitboxShapeNode.Disabled = !value;
     }
 }
