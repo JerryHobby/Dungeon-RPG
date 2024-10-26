@@ -1,15 +1,17 @@
 using Godot;
-using System;
+using System.Linq;
 
 public partial class EnemyAttackState : EnemyState
 {
+    Node3D target = null;
+
     protected override void EnterState()
     {
         GD.Print("EnemyAttackState");
-        characterNode.AnimPlayerNode.Play(GameConstants.ANIM_ATTACK);
+
+        BeginAttack();
 
         characterNode.AnimPlayerNode.AnimationFinished += OnAnimationFinished;
-
         characterNode.AttackAreaNode.BodyExited += HandleAttackAreaBodyExited;
     }
 
@@ -19,7 +21,6 @@ public partial class EnemyAttackState : EnemyState
         characterNode.AnimPlayerNode.Stop();
         characterNode.AttackAreaNode.BodyExited -= HandleAttackAreaBodyExited;
         characterNode.AnimPlayerNode.AnimationFinished -= OnAnimationFinished;
-
     }
 
 
@@ -33,20 +34,38 @@ public partial class EnemyAttackState : EnemyState
     private void OnAnimationFinished(StringName animName)
     {
         characterNode.EnableHitbox(false);
-        characterNode.AnimPlayerNode.Play(GameConstants.ANIM_ATTACK);
+        BeginAttack();
     }
 
     private void PerformHit()
     {
-        Vector3 newPosition = characterNode.SpriteNode.FlipH ?
-            Vector3.Left : Vector3.Right;
-
-        float distanceMultiplier = 0.75f;
-        newPosition *= distanceMultiplier;
-
-        characterNode.HitboxNode.Position = newPosition;
+        characterNode.HitboxNode.GlobalPosition = target.GlobalPosition;
         characterNode.EnableHitbox(true);
+    }
 
-        //GD.Print("Enemy PerformHit");
+    private void BeginAttack()
+    {
+        target = characterNode.ChaseAreaNode
+            .GetOverlappingBodies()
+            .FirstOrDefault();
+
+        if (target == null)
+        {
+            Node3D chaseTarget = characterNode.ChaseAreaNode
+            .GetOverlappingBodies()
+            .FirstOrDefault();
+
+            if (chaseTarget == null)
+            {
+                characterNode.StateMachine.SwitchState<EnemyReturnState>();
+            }
+            characterNode.StateMachine.SwitchState<EnemyChaseState>();
+
+            return;
+        }
+
+        characterNode.SpriteNode.FlipH = target.GlobalPosition.X < characterNode.GlobalPosition.X;
+
+        characterNode.AnimPlayerNode.Play(GameConstants.ANIM_ATTACK);
     }
 }

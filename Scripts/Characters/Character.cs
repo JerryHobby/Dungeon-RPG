@@ -24,7 +24,6 @@ public partial class Character : CharacterBody3D
 
     public Vector2 direction = new();
 
-
     public override void _Ready()
     {
         if (HurtboxNode != null)
@@ -45,7 +44,7 @@ public partial class Character : CharacterBody3D
 
     }
 
-    private StatResource GetStatResource(Stat stat)
+    public StatResource GetStatResource(Stat stat)
     {
         return stats.Where((element) => element.StatType == stat)
         .FirstOrDefault();
