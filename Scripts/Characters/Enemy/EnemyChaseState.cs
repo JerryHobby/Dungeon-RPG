@@ -19,7 +19,6 @@ public partial class EnemyChaseState : EnemyState
 
     protected override void EnterState()
     {
-        GD.Print("EnemyChaseState");
         characterNode.AnimPlayerNode.Play(GameConstants.ANIM_MOVE);
 
         target = characterNode.ChaseAreaNode
@@ -59,6 +58,13 @@ public partial class EnemyChaseState : EnemyState
 
     private void HandleChaseTimerTimeout()
     {
+        // has player died?
+        if (!IsInstanceValid(target))
+        {
+            characterNode.StateMachine.SwitchState<EnemyReturnState>();
+            return;
+        }
+
         destination = target.GlobalPosition;
         characterNode.AgentNode.TargetPosition = destination;
     }

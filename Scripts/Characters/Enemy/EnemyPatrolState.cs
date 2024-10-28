@@ -3,7 +3,6 @@ using System;
 
 public partial class EnemyPatrolState : EnemyState
 {
-
     [Export] private Timer idleTimerNode;
     [Export(PropertyHint.Range, "0, 20, 0.1")] private float maxIdleTime = 3f;
     private int pointIndex = 0;
@@ -17,10 +16,6 @@ public partial class EnemyPatrolState : EnemyState
 
     protected override void EnterState()
     {
-        GD.Print("EnemyPatrolState");
-        // pointIndex = 1;
-        // destination = GetPointGlobalPosition(pointIndex);
-        // characterNode.AgentNode.TargetPosition = destination;
         HandleIdleTimerTimeout();
 
         characterNode.AnimPlayerNode.Play(GameConstants.ANIM_MOVE);

@@ -54,7 +54,5 @@ public partial class PlayerAttackState : PlayerState
 
         characterNode.HitboxNode.Position = newPosition;
         characterNode.EnableHitbox(true);
-
-        //GD.Print("Player PerformHit");
     }
 }

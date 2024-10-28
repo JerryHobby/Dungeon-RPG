@@ -36,11 +36,11 @@ public partial class Character : CharacterBody3D
     {
         StatResource health = GetStatResource(Stat.Health);
 
-        Character player = area.GetOwner<Character>();
+        Character character = area.GetOwner<Character>();
 
-        health.StatValue -= player.GetStatResource(Stat.Strength).StatValue;
+        health.StatValue -= character.GetStatResource(Stat.Strength).StatValue;
 
-        GD.Print($"{player.Name} hit for {player.GetStatResource(Stat.Strength).StatValue} damage.  Remaining health == {health.StatValue}");
+        GD.Print($"{character.Name} did {character.GetStatResource(Stat.Strength).StatValue} damage.  Target health == {health.StatValue}");
 
     }
 

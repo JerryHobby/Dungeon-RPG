@@ -7,8 +7,6 @@ public partial class EnemyAttackState : EnemyState
 
     protected override void EnterState()
     {
-        GD.Print("EnemyAttackState");
-
         BeginAttack();
 
         characterNode.AnimPlayerNode.AnimationFinished += OnAnimationFinished;
@@ -26,7 +24,6 @@ public partial class EnemyAttackState : EnemyState
 
     private void HandleAttackAreaBodyExited(Node3D body)
     {
-        GD.Print("EnemyAttackState: HandleAttackAreaBodyExited");
         characterNode.StateMachine.SwitchState<EnemyChaseState>();
     }
 
