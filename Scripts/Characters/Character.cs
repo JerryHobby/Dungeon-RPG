@@ -3,7 +3,7 @@ using System;
 using System.Linq;
 
 
-public partial class Character : CharacterBody3D
+public abstract partial class Character : CharacterBody3D
 {
     [Export] private StatResource[] stats;
 
@@ -28,20 +28,19 @@ public partial class Character : CharacterBody3D
     {
         if (HurtboxNode != null)
         {
-            HurtboxNode.AreaEntered += OnHurtboxAreaEntered;
+            HurtboxNode.AreaEntered += HandleHurtboxAreaEntered;
         }
     }
 
-    private void OnHurtboxAreaEntered(Area3D area)
+    private void HandleHurtboxAreaEntered(Area3D area)
     {
+        if (area is not IHitbox hitbox) return;
+
         StatResource health = GetStatResource(Stat.Health);
+        float damage = hitbox.GetDamage();
+        GD.Print($"Dealing Damage: {damage}");
 
-        Character character = area.GetOwner<Character>();
-
-        health.StatValue -= character.GetStatResource(Stat.Strength).StatValue;
-
-        GD.Print($"{character.Name} did {character.GetStatResource(Stat.Strength).StatValue} damage.  Target health == {health.StatValue}");
-
+        health.StatValue -= damage;
     }
 
     public StatResource GetStatResource(Stat stat)

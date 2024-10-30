@@ -4,10 +4,13 @@ using System;
 public partial class PlayerAttackState : PlayerState
 {
     [Export] Timer comboTimerNode;
-    private int comboCounter = 0;
+    [Export] PackedScene lightningScene;
 
     private static string[] attackAnim = new string[]
         { GameConstants.ANIM_KICK, GameConstants.ANIM_ATTACK };
+
+    private int comboCounter = 0;
+    private int maxComboCount = attackAnim.Length;
 
     public override void _Ready()
     {
@@ -23,21 +26,22 @@ public partial class PlayerAttackState : PlayerState
     protected override void EnterState()
     {
         characterNode.AnimPlayerNode.Play(attackAnim[comboCounter], customSpeed: 1.5f);
-        characterNode.AnimPlayerNode.AnimationFinished += OnAnimationFinished;
+        characterNode.AnimPlayerNode.AnimationFinished += HandleAnimationFinished;
+        characterNode.HitboxNode.BodyEntered += HandleHitboxBodyEntered;
     }
-
 
     protected override void ExitState()
     {
         characterNode.AnimPlayerNode.Stop();
-        characterNode.AnimPlayerNode.AnimationFinished -= OnAnimationFinished;
+        characterNode.AnimPlayerNode.AnimationFinished -= HandleAnimationFinished;
+        characterNode.HitboxNode.BodyEntered -= HandleHitboxBodyEntered;
+
         comboTimerNode.Start();
     }
 
-
-    private void OnAnimationFinished(StringName animName)
+    private void HandleAnimationFinished(StringName animName)
     {
-        comboCounter = (comboCounter + 1) % attackAnim.Length;
+        comboCounter = (comboCounter + 1) % maxComboCount;
 
         characterNode.EnableHitbox(false);
 
@@ -54,5 +58,18 @@ public partial class PlayerAttackState : PlayerState
 
         characterNode.HitboxNode.Position = newPosition;
         characterNode.EnableHitbox(true);
+    }
+
+    private void HandleHitboxBodyEntered(Node3D body)
+    {
+        GD.Print($"Combo: {comboCounter} MaxComboCount: {maxComboCount}");
+        if (comboCounter != maxComboCount - 1)
+        {
+            return;
+        }
+
+        Node3D lightning = lightningScene.Instantiate<Node3D>();
+        GetTree().CurrentScene.AddChild(lightning);
+        lightning.GlobalPosition = body.GlobalPosition;
     }
 }

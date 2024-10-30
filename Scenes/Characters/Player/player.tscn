@@ -1,4 +1,4 @@
-[gd_scene load_steps=95 format=3 uid="uid://uoat0hlhhkub"]
+[gd_scene load_steps=98 format=3 uid="uid://uoat0hlhhkub"]
 
 [ext_resource type="Script" path="res://Scripts/Characters/Player/Player.cs" id="1_8rusb"]
 [ext_resource type="Texture2D" uid="uid://va16jliaqs03" path="res://Assets/Sprites/Characters/Player/Idle Blinking/Idle Blinking_000.png" id="1_k5bqu"]
@@ -83,7 +83,10 @@
 [ext_resource type="Script" path="res://Scripts/Characters/Player/PlayerMoveState.cs" id="78_6sv56"]
 [ext_resource type="Script" path="res://Scripts/Characters/Player/PlayerAttackState.cs" id="78_xqr8y"]
 [ext_resource type="Script" path="res://Scripts/Characters/Player/PlayerDashState.cs" id="79_ixqqx"]
+[ext_resource type="PackedScene" uid="uid://dcnnwyj1i0asb" path="res://Scenes/Abilities/lightning.tscn" id="81_2si81"]
 [ext_resource type="Script" path="res://Scripts/Characters/Player/PlayerDeathState.cs" id="83_ljqts"]
+[ext_resource type="PackedScene" uid="uid://c4colk4bqmcq8" path="res://Scenes/Abilities/bomb.tscn" id="84_h2cc1"]
+[ext_resource type="Script" path="res://Scripts/Characters/AttackHitbox.cs" id="86_dfaav"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_3po4c"]
 radius = 0.492413
@@ -280,6 +283,7 @@ states = [NodePath("MoveState"), NodePath("DashState"), NodePath("IdleState"), N
 [node name="AttackState" type="Node" parent="StateMachine" node_paths=PackedStringArray("comboTimerNode")]
 script = ExtResource("78_xqr8y")
 comboTimerNode = NodePath("Timer")
+lightningScene = ExtResource("81_2si81")
 
 [node name="Timer" type="Timer" parent="StateMachine/AttackState"]
 wait_time = 2.0
@@ -294,6 +298,7 @@ script = ExtResource("78_6sv56")
 [node name="DashState" type="Node" parent="StateMachine" node_paths=PackedStringArray("dashTimerNode")]
 script = ExtResource("79_ixqqx")
 dashTimerNode = NodePath("Timer")
+bombScene = ExtResource("84_h2cc1")
 
 [node name="Timer" type="Timer" parent="StateMachine/DashState"]
 wait_time = 0.4
@@ -304,7 +309,8 @@ script = ExtResource("83_ljqts")
 
 [node name="Hitbox" type="Area3D" parent="."]
 collision_layer = 2
-collision_mask = 0
+collision_mask = 4
+script = ExtResource("86_dfaav")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Hitbox"]
 shape = SubResource("BoxShape3D_kryla")

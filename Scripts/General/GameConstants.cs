@@ -31,4 +31,8 @@ public class GameConstants
 
     public const string ANIM_KICK = "Kick";
     public const string ANIM_RESET = "RESET";
+
+    public const string ANIM_EXPAND = "Expand";
+    public const string ANIM_EXPLOSION = "Explosion";
+    public const string ANIM_LIGHTNING = "Lightning";
 }

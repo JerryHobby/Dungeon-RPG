@@ -5,6 +5,7 @@ public partial class PlayerDashState : PlayerState
 {
     [Export] private Timer dashTimerNode;
     [Export(PropertyHint.Range, "1.0,25.0,0.1")] private float speed = GameConstants.DEFAULT_SPEED * 2;
+    [Export] private PackedScene bombScene;
 
     public override void _Ready()
     {
@@ -30,6 +31,10 @@ public partial class PlayerDashState : PlayerState
 
         characterNode.Velocity *= speed;
         dashTimerNode.Start();
+
+        Node3D bomb = bombScene.Instantiate<Node3D>();
+        GetTree().CurrentScene.AddChild(bomb);
+        bomb.GlobalPosition = characterNode.GlobalPosition;
     }
 
     private void HandleDashTimeout()
