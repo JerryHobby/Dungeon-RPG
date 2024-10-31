@@ -28,6 +28,7 @@ public class GameConstants
     public const string ANIM_ATTACK = "Attack";
     public const string ANIM_DASH = "Dash";
     public const string ANIM_DEATH = "Death";
+    public const string ANIM_STUN = "Stun";
 
     public const string ANIM_KICK = "Kick";
     public const string ANIM_RESET = "RESET";

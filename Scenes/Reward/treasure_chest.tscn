@@ -1,8 +1,9 @@
-[gd_scene load_steps=6 format=3 uid="uid://ts0ehpafbd26"]
+[gd_scene load_steps=10 format=3 uid="uid://ts0ehpafbd26"]
 
 [ext_resource type="Texture2D" uid="uid://c6l4dapke3abi" path="res://Assets/Sprites/General/16x16.png" id="1_8bm1l"]
 [ext_resource type="Script" path="res://Scripts/Reward/TreasureChest.cs" id="1_g05s0"]
 [ext_resource type="Texture2D" uid="uid://chogy6q265qjk" path="res://Assets/Sprites/UI/Keyboard Letters and Symbols.png" id="2_134qd"]
+[ext_resource type="PackedScene" uid="uid://dmeauftbt2ao4" path="res://Assets/Models/Dungeon/gltf/trunk_small_A.gltf.glb" id="4_ic2x1"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_alqb0"]
 size = Vector3(0.610291, 0.901978, 0.453125)
@@ -11,12 +12,50 @@ size = Vector3(0.610291, 0.901978, 0.453125)
 height = 0.5
 radius = 2.0
 
+[sub_resource type="Animation" id="Animation_a32xx"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(2, 2, 2)]
+}
+
+[sub_resource type="Animation" id="Animation_tgix5"]
+resource_name = "flash"
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:scale")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0.0333333, 0.533333),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(2, 2, 2), Vector3(2.07, 2.07, 2.07)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_3xxl3"]
+_data = {
+"RESET": SubResource("Animation_a32xx"),
+"flash": SubResource("Animation_tgix5")
+}
+
 [node name="TreasureChest" type="StaticBody3D" node_paths=PackedStringArray("areaNode", "spriteNode")]
 script = ExtResource("1_g05s0")
 areaNode = NodePath("Area3D")
 spriteNode = NodePath("InteractiveIcon")
 
 [node name="Sprite3D" type="Sprite3D" parent="."]
+visible = false
 pixel_size = 0.05
 texture_filter = 0
 texture = ExtResource("1_8bm1l")
@@ -28,8 +67,9 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0062561, -0.05259, 0.003906
 shape = SubResource("BoxShape3D_alqb0")
 
 [node name="InteractiveIcon" type="Sprite3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.813276, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.870988, 0)
 pixel_size = 0.03
+billboard = 1
 texture_filter = 0
 texture = ExtResource("2_134qd")
 region_enabled = true
@@ -40,3 +80,19 @@ collision_mask = 2
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
 shape = SubResource("CylinderShape3D_nqxeg")
+
+[node name="trunk_small_A_gltf" parent="." instance=ExtResource("4_ic2x1")]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, -0.513718, 0)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+root_node = NodePath("../trunk_small_A_gltf")
+libraries = {
+"": SubResource("AnimationLibrary_3xxl3")
+}
+autoplay = "flash"
+
+[node name="SpotLight3D" type="SpotLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.794542, 0.60721, 0, -0.60721, 0.794542, 0, 0.554086, 0.864251)
+light_color = Color(1, 0.705882, 0, 1)
+spot_range = 1.3244
+spot_angle = 38.8981

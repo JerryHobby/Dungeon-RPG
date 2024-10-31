@@ -1,6 +1,7 @@
 using Godot;
 using System;
 using System.Linq;
+using System.Reflection.Metadata;
 
 
 public abstract partial class Character : CharacterBody3D
@@ -14,6 +15,8 @@ public abstract partial class Character : CharacterBody3D
     [Export] public Area3D HurtboxNode { get; private set; }
     [Export] public Area3D HitboxNode { get; private set; }
     [Export] public CollisionShape3D HitboxShapeNode { get; private set; }
+    [Export] public Timer ShaderTimerNode { get; private set; }
+
 
     [ExportGroup("AI Nodes")]
     [Export] public Path3D PathNode { get; private set; }
@@ -21,15 +24,22 @@ public abstract partial class Character : CharacterBody3D
     [Export] public Area3D ChaseAreaNode { get; private set; }
     [Export] public Area3D AttackAreaNode { get; private set; }
 
-
     public Vector2 direction = new();
+    private ShaderMaterial shader;
+
 
     public override void _Ready()
     {
+        shader = (ShaderMaterial)SpriteNode.MaterialOverlay;
+
         if (HurtboxNode != null)
         {
             HurtboxNode.AreaEntered += HandleHurtboxAreaEntered;
         }
+
+        ShaderTimerNode.Timeout += HandleShaderTimerTimeout;
+
+        SpriteNode.TextureChanged += HandleTextureChanged;
     }
 
     private void HandleHurtboxAreaEntered(Area3D area)
@@ -39,6 +49,9 @@ public abstract partial class Character : CharacterBody3D
         StatResource health = GetStatResource(Stat.Health);
         float damage = hitbox.GetDamage();
         GD.Print($"Dealing Damage: {damage}");
+
+        ShaderTimerNode.Start();
+        shader.SetShaderParameter("active", true);
 
         health.StatValue -= damage;
     }
@@ -63,4 +76,15 @@ public abstract partial class Character : CharacterBody3D
     {
         HitboxShapeNode.Disabled = !value;
     }
+
+    private void HandleTextureChanged()
+    {
+        shader.SetShaderParameter("tex", SpriteNode.Texture);
+    }
+
+    private void HandleShaderTimerTimeout()
+    {
+        shader.SetShaderParameter("active", false);
+    }
+
 }

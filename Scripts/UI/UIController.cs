@@ -31,7 +31,6 @@ public partial class UIController : Control
         GameEvents.OnReward += HandleReward;
     }
 
-
     public override void _Input(InputEvent @event)
     {
         if (canPause && Input.IsActionJustPressed(GameConstants.INPUT_PAUSE))
